@@ -1,6 +1,7 @@
 import {Request,Response} from "express"
 import { handleHttp } from "../utils/error.handle"
 import { insertClient } from "../services/client.service"
+import models from "../models"
 
 const getClient = (req:Request,res:Response)=>{
 try{
@@ -26,15 +27,26 @@ try{
 }
 }
 
-const postClient = async (req:Request,res:Response)=>{
-try{     
-    const body = req.body
-    //const responseItem = await insertClient(body)
-    console.log(req)
-    res.send(body)
-}catch (e){
-     handleHttp(res, 'ERROR_POST_CLIENTS',e)
-}
+export async function postClient(req: Request, res: Response) {
+    try {
+        const body = req.body;
+
+        if (Object.keys(body).length === 0) {
+            return res.status(400).json({ message: 'El cuerpo de la petición está vacío.' });
+        }
+
+        const clientCount = await models.clients.countDocuments();
+        const newClientId = clientCount + 1;
+
+        const newClient = await models.clients.create({
+            ...body,
+            id: newClientId,
+        });
+        res.status(201).json(newClient);
+    } catch (e) {
+        console.error("Error en postClient:", e);
+        res.status(500).json({ message: "Error interno del servidor", error: e });
+    }
 }
 
 const deleteClient = (req:Request,res:Response)=>{
@@ -45,4 +57,4 @@ try{
 }
 }
 
-export {getClient, getClients, updateClient,postClient,deleteClient}
+export {getClient, getClients, updateClient,deleteClient}
