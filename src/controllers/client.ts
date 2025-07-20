@@ -12,7 +12,7 @@ try{
     }
     res.send(client);
 }catch (e){
-    console.error("Error en getClient:", e);
+    console.error("Error en Obtener al cliente:", e);
     res.status(500).json({ message: "Error interno del servidor", error: e });
 }
 }
