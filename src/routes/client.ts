@@ -10,8 +10,8 @@ const router = Router()
 
 
 //Rutas
-router.get('/', getClient)
-router.get('/:id', getClients)
+router.get('/', getClients)
+router.get('/:id', getClient)
 router.post('/',postClient)
 router.put('/:id',updateClient)
 router.delete('/:id',deleteClient)

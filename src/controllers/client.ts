@@ -1,6 +1,5 @@
 import {Request,Response} from "express"
 import { handleHttp } from "../utils/error.handle"
-import { insertClient } from "../services/client.service"
 import models from "../models"
 
 const getClient = (req:Request,res:Response)=>{
@@ -10,10 +9,10 @@ try{
     handleHttp(res, 'ERROR_GET_CLIENT')
 }
 }
-
-const getClients = (req:Request,res:Response)=>{
+const getClients = async (req:Request,res:Response)=>{
 try{
-
+   const clients = await models.clients.find()
+   res.send(clients)
 }catch (e){
      handleHttp(res, 'ERROR_GET_CLIENTS')
 }

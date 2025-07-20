@@ -1,5 +1,5 @@
 export interface Clients {
-    id: number
+    id:number
     name: string
     second_name:string
     observation: string
