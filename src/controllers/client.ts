@@ -77,4 +77,4 @@ try{
 }
 }
 
-export {getClient, getClients,}
+export {getClient, getClients}
