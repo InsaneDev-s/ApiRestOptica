@@ -2,11 +2,18 @@ import {Request,Response} from "express"
 import { handleHttp } from "../utils/error.handle"
 import models from "../models"
 
-const getClient = (req:Request,res:Response)=>{
+const getClient = async({params}:Request,res:Response)=>{
 try{
+    const { id } = params;
+    const client = await models.clients.findById(id);
 
+    if (!client) {
+      return res.status(404).json({ message: "Cliente no encontrado" });
+    }
+    res.send(client);
 }catch (e){
-    handleHttp(res, 'ERROR_GET_CLIENT')
+    console.error("Error en getClient:", e);
+    res.status(500).json({ message: "Error interno del servidor", error: e });
 }
 }
 const getClients = async (req:Request,res:Response)=>{
@@ -18,12 +25,21 @@ try{
 }
 }
 
-const updateClient = (req:Request,res:Response)=>{
-try{
+export async function updateClient(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    const update = req.body;
 
-}catch (e){
-     handleHttp(res, 'ERROR_UPDATE_CLIENTS')
-}
+    const upClient = await models.clients.findByIdAndUpdate(id, update, { new: true });
+
+    if (!upClient) {
+      return res.status(404).json({ message: "Cliente no encontrado" });
+    }
+
+    res.status(200).json(upClient);
+  } catch (e) {
+    handleHttp(res, 'ERROR_UPDATE_CLIENTS', e);
+  }
 }
 
 export async function postClient(req: Request, res: Response) {
@@ -48,12 +64,17 @@ export async function postClient(req: Request, res: Response) {
     }
 }
 
-const deleteClient = (req:Request,res:Response)=>{
+export async function  deleteClient (req:Request,res:Response){
 try{
-
+    const {id} = req.params
+    const deleteC = await models.clients.findByIdAndDelete({_id:id})
+      if (!deleteC) {
+      return res.status(404).json({ message: "Cliente no encontrado" });
+    }
+   res.status(200).json(deleteC)
 }catch (e){
      handleHttp(res, 'ERROR_DELETE_CLIENTS')
 }
 }
 
-export {getClient, getClients, updateClient,deleteClient}
+export {getClient, getClients,}
