@@ -14,6 +14,7 @@ export const loginUser = async ({body}:Request, res:Response)=>{
       return res.status(404).json({ message: "Usuario no encontrado o datos incorrectos." });
     }
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    console.log(isPasswordCorrect)
     res.send(user)
     }catch(e){
      handleHttp(res, "ERROR_LOGIN");
@@ -33,7 +34,7 @@ export const registerUser = async (req:Request, res:Response)=>{
         });
         res.status(201).json(newUser);
     } catch (e) {
-        console.error("Error en registerUser:", e);
+        console.error("Error en register User:", e);
         res.status(500).json({ message: "Error interno del servidor", error: e });
     }
 }

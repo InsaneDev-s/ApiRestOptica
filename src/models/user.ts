@@ -14,7 +14,7 @@ const UserSchema = new Schema<Auth>(
     },
    },
    {
-    versionKey:false,
+    versionKey: false,
     timestamps: true
    }
 )
