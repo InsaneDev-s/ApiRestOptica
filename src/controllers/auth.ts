@@ -1,3 +1,5 @@
-export const loginCtrl = async (req:Request, res:Response)=>{
-    
+
+export const loginCtrl = async ({body}:Request, res:Response)=>{
+
+
 }
