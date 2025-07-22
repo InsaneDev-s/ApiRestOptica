@@ -1,8 +1,10 @@
 import {Router} from "express"
-import {loginCtrl} from "../controllers/auth"
+import {loginUser, registerUser} from "../controllers/auth"
 
 const router = Router()
 
-router.post("/:email", loginCtrl)
+router.get("/login", loginUser)
+router.post("/", registerUser)
+
 
 export {router}

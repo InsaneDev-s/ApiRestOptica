@@ -1,5 +1,4 @@
 import {Schema, Types, model, Model} from "mongoose";
-import { Clients } from "../interfaces/clients.inferface";
 import { Auth } from "../interfaces/auth.interface";
 
 const UserSchema = new Schema<Auth>(
@@ -8,7 +7,7 @@ const UserSchema = new Schema<Auth>(
         required: true,
         type: String
     },
-    email:{
+    mail:{
         required:true,
         type: String,
         unique: true
