@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { google } from "googleapis";
 import dotenv from "dotenv";
+import ClientModel  from "../models/client"
 
 dotenv.config();
 
@@ -13,6 +14,16 @@ export const createGoogleCalendarEvent = async (req: Request, res: Response) => 
       return res.status(400).json({ message: "Faltan campos obligatorios" });
     }
     
+    // 2. Buscar al cliente por su ObjectId
+    const foundClient = await ClientModel.findById(client);
+    if (!foundClient) {
+      return res.status(404).json({ message: "Cliente no encontrado" });
+    }
+
+    // 3. Obtener nombre del cliente
+    const clientName = foundClient.name;
+
+
     // Autenticación OAuth2
     const oAuth2Client = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
@@ -33,7 +44,7 @@ export const createGoogleCalendarEvent = async (req: Request, res: Response) => 
 
     // Crear el evento
     const event = {
-      summary: `Cita con cliente ${client}`,
+      summary: `Cita con cliente ${clientName}`,
       description: `${notes} | Estado: ${status}`,
       start: {
         dateTime: startDateTime.toISOString(),
