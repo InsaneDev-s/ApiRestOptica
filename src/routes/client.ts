@@ -5,7 +5,6 @@ const router = Router()
 
 /**
  * Esta es la ruta para mostrar la lista de clientes
- * http://localhost:3002/items[GET] 
  */
 
 
