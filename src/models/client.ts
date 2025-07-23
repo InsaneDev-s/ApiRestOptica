@@ -19,10 +19,6 @@ const ClientSchema = new Schema<Clients>(
             type: String,
             required : true
         },
-        year:{
-            type: Number,
-            required : true
-        },
         direction: {
             type: String,
             required : true
@@ -30,6 +26,10 @@ const ClientSchema = new Schema<Clients>(
         phone: {
             type: Number,
             required : true
+        },
+        birthday: {
+            type: Date,
+            required: true
         },
         mail: {
             type: String,

@@ -3,7 +3,7 @@ export interface Clients {
     name: string
     second_name:string
     observation: string
-    year: number
+    birthday: Date
     direction:string
     phone:number
     mail:string

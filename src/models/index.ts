@@ -1,9 +1,11 @@
 import clients from './client'
+import schedules from './schedule';
 import users from './user'
 
 const models = {
   clients,
-  users
+  users,
+  schedules
 };
 
 export default models;
