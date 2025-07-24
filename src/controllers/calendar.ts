@@ -21,7 +21,7 @@ export const createGoogleCalendarEvent = async (req: Request, res: Response) => 
     }
 
     // 3. Obtener nombre del cliente
-    const clientName = foundClient.name;
+    const clientName = foundClient.name + " " + foundClient.second_name;
 
 
     // Autenticación OAuth2
