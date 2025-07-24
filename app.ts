@@ -1,8 +1,8 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import { router } from "./routes";
-import db from "./config/mongo";
+import { router } from "./src/routes";
+import db from "./src/config/mongo";
 
 const PORT = process.env.PORT || "3000";
 const app = express();
