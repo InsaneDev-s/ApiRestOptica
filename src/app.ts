@@ -13,7 +13,7 @@ app.use(express.json());
 routerApi(app); // Ejecuta la función routerApi pasando la app como parámetro
 
 app.get("/", (_req, res: Response) => {
-   res.send("api optica is aliveeeeee :)");
+   res.send("Api Optica");
 });
 
 db().then(() => console.log("Conexion Ready"));
