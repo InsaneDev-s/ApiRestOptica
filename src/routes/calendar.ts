@@ -12,4 +12,4 @@ const router = Router()
 router.post("/create-event", createGoogleCalendarEvent);
 
 
-export {router}
+export default router

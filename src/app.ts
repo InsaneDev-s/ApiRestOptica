@@ -2,14 +2,15 @@ import "dotenv/config";
 import express, { Response } from "express";
 import cors from "cors";
 import db from "./config/mongo";
-import { router } from "./routes";
+import routerApi from "./routes";
+
 
 const PORT = process.env.PORT || "3000";
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(router);
+routerApi(app); // Ejecuta la función routerApi pasando la app como parámetro
 
 app.get("/", (_req, res: Response) => {
    res.send("api optica is aliveeeeee :)");

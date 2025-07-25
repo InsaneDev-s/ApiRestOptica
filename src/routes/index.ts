@@ -1,21 +1,18 @@
-import { Router } from "express";
-import {readdirSync} from "fs"
+import express, { Application } from "express";
+import client from "./client";
+import auth from "./auth";
+import calendar from "./calendar";
+import schedule from "./schedule";
 
-const PATH_ROUTER = `${__dirname}`
-const router = Router()
+function routerApi(app: Application) {
+  const router = express.Router();
 
-const cleanFileName =(fileName:string) =>{
-    const file = fileName.split('.').shift()
-    return file
+  app.use("/api", router);
+
+  router.use(client);
+  router.use(auth)
+  router.use(calendar)
+  router.use(schedule)
 }
 
-readdirSync(PATH_ROUTER).filter((fileName)=>{
-    const cleanName = cleanFileName(fileName)
-    if(cleanName !== 'index'){
-        import(`./${cleanName}`).then((moduleRouter)=>{
-            console.log(`se esta cargando la ruta.... /${cleanName}`)
-            router.use(`/${cleanName}`, moduleRouter.router)
-        })}
-})
-
-export {router}
+export default routerApi;

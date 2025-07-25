@@ -7,4 +7,4 @@ router.get("/login", loginUser)
 router.post("/", registerUser)
 
 
-export {router}
+export default router

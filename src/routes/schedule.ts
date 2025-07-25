@@ -8,4 +8,4 @@ router.post("/",postReminder )
 router.delete("/:id",deleteReminder)
 
 
-export {router}
+export default router
