@@ -15,6 +15,10 @@ const ClientSchema = new Schema<Clients>(
             type: String,
             required : true
         },
+        dni:{
+        type: String,
+        required: true
+        },
         observation:{
             type: String,
             required : true
@@ -24,7 +28,7 @@ const ClientSchema = new Schema<Clients>(
             required : true
         },
         phone: {
-            type: Number,
+            type: String,
             required : true
         },
         birthday: {
