@@ -1,11 +1,19 @@
-import {Router} from "express"
+import { Router } from "express";
+import {
+  getReminders,
+  postReminder,
+  deleteReminder
+} from "../controllers/scheduling";
 
-import { getReminders, postReminder, deleteReminder } from "../controllers/scheduling"
-const router = Router()
+const router = Router();
 
-router.get("/schedule", getReminders)
-router.post("/addReminder",postReminder )
-router.delete("/:id",deleteReminder)
+// Obtener todos los recordatorios
+router.get("/reminders", getReminders);
 
+// Crear un nuevo recordatorio
+router.post("/addReminder", postReminder);
 
-export default router
+// Eliminar un recordatorio por ID
+router.delete("/reminders/:id", deleteReminder);
+
+export default router;
