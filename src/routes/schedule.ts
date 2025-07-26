@@ -1,9 +1,9 @@
 import {Router} from "express"
 
-import { getReminder, postReminder, deleteReminder } from "../controllers/scheduling"
+import { getReminders, postReminder, deleteReminder } from "../controllers/scheduling"
 const router = Router()
 
-router.get("/schedule", getReminder)
+router.get("/schedule", getReminders)
 router.post("/addReminder",postReminder )
 router.delete("/:id",deleteReminder)
 
