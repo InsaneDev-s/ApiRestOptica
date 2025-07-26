@@ -4,7 +4,7 @@ import { getReminder, postReminder, deleteReminder } from "../controllers/schedu
 const router = Router()
 
 router.get("/schedule", getReminder)
-router.post("/",postReminder )
+router.post("/addReminder",postReminder )
 router.delete("/:id",deleteReminder)
 
 
