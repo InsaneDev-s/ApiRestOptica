@@ -5,6 +5,7 @@ const ScheduleModule = new Schema<Schedule>(
     {
      client:{
         type: Schema.Types.ObjectId,
+        ref: 'clients',
         required:true
      },
      date: {
