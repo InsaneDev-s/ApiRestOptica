@@ -13,8 +13,8 @@ const router = Router()
 router.get('/clients',authMiddleware, getClients)
 router.get('/clients/:id',authMiddleware, getClient)
 router.post('/addClient',authMiddleware,postClient)
-router.put('/clients/:id',authMiddleware,updateClient)
-router.delete('/clients/:id',authMiddleware,deleteClient)
+router.put('/clients/:id',updateClient)
+router.delete('/clients/:id',deleteClient)
 
 
 export default router
