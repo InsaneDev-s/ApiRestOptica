@@ -11,10 +11,10 @@ const router = Router()
 
 //Rutas
 router.get('/clients',authMiddleware, getClients)
-router.get('/:id',authMiddleware, getClient)
+router.get('/clients/:id',authMiddleware, getClient)
 router.post('/addClient',authMiddleware,postClient)
-router.put('/:id',authMiddleware,updateClient)
-router.delete('/:id',authMiddleware,deleteClient)
+router.put('/clients/:id',authMiddleware,updateClient)
+router.delete('/clients/:id',authMiddleware,deleteClient)
 
 
 export default router
