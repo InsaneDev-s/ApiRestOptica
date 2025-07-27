@@ -8,7 +8,7 @@ import {
 const router = Router();
 
 // Obtener todos los recordatorios
-router.get("/reminders", getReminders);
+router.get("/reminders/res", getReminders);
 
 // Crear un nuevo recordatorio
 router.post("/addReminder", postReminder);

@@ -6,7 +6,7 @@ import { handleHttp } from "../utils/error.handle";
 // Obtener todos los recordatorios
 const getReminders = async (req: Request, res: Response) => {
   try {
-    const reminders = await models.schedules.find();
+    const reminders = await models.schedules.find().populate("client");
     res.status(200).json(reminders);
   } catch (e) {
     console.error("Error al obtener los recordatorios:", e);
