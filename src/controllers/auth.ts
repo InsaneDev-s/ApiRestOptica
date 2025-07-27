@@ -1,40 +1,30 @@
 import { Request, Response } from "express";
+import models from "../models";
 import bcrypt from "bcryptjs";
-import { models } from "mongoose";
-import { handleHttp } from "../utils/error.handle";
+import jwt from "jsonwebtoken"
 
-export const loginUser = async ({body}:Request, res:Response)=>{
-    try{
-    const { mail, password } = body;
-    if (!mail || !password) {
-      return res.status(400).json({ message: "Email y contraseña son obligatorios." });
-    }
-     const user = await models.users.findOne({ mail, password });
-       if (!user) {
-      return res.status(404).json({ message: "Usuario no encontrado o datos incorrectos." });
-    }
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    console.log(isPasswordCorrect)
-    res.send(user)
-    }catch(e){
-     handleHttp(res, "ERROR_LOGIN");
-    }
-}
+const JWT_SECRET = process.env.JWT_SECRET || "secreto_seguro";
 
-export const registerUser = async (req:Request, res:Response)=>{
-   try {
-        const body = req.body;
+export const loginCtrl = async (req: Request, res: Response) => {
+  try {
+    const { mail, password } = req.body;
 
-        const userCount = await models.users.countDocuments();
-        const newUserId = userCount + 1;
-
-        const newUser = await models.users.create({
-            ...body,
-            id: newUserId,
-        });
-        res.status(201).json(newUser);
-    } catch (e) {
-        console.error("Error en register User:", e);
-        res.status(500).json({ message: "Error interno del servidor", error: e });
+    const user = await models.users.findOne({ mail });
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
     }
-}
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ message: "Contraseña incorrecta" });
+    }
+
+    const token = jwt.sign({ id: user._id, mail: user.mail }, JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    res.json({ token, user: { id: user._id, mail: user.mail } });
+  } catch (error) {
+    res.status(500).json({ message: "Error interno", error });
+  }
+};

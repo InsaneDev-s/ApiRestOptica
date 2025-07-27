@@ -1,5 +1,6 @@
 import {  Router } from "express";
 import { createGoogleCalendarEvent } from "../controllers/calendar";
+import { authMiddleware } from "../middleware/auth";
 const router = Router()
 
 /**
@@ -9,7 +10,7 @@ const router = Router()
 
 
 //Rutas
-router.post("/create-event", createGoogleCalendarEvent);
+router.post("/create-event",authMiddleware, createGoogleCalendarEvent);
 
 
 export default router
