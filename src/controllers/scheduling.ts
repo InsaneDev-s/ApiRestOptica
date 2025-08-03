@@ -70,4 +70,26 @@ const deleteReminder = async (req: Request, res: Response) => {
   }
 };
 
-export { postReminder, deleteReminder, getReminders };
+// Actualizar un recordatorio por ID
+const updateReminders = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "El ID proporcionado no es válido." });
+    }
+
+    const deletedReminder = await models.schedules.findByIdAndUpdate(id);
+
+    if (!deletedReminder) {
+      return res.status(404).json({ message: "Recordatorio no encontrado." });
+    }
+
+    res.status(200).json({ message: "Recordatorio eliminado con éxito.", deletedReminder });
+  } catch (e) {
+    console.error("Error al eliminar el recordatorio:", e);
+    handleHttp(res, "ERROR_DELETE_REMINDER", e);
+  }
+};
+
+export { postReminder, deleteReminder, getReminders, updateReminders };
