@@ -2,7 +2,8 @@ import { Router } from "express";
 import {
   getReminders,
   postReminder,
-  deleteReminder
+  deleteReminder,
+  updateReminders
 } from "../controllers/scheduling";
 import { authMiddleware } from "../middleware/auth";
 
@@ -13,6 +14,9 @@ router.get("/reminders/res", authMiddleware, getReminders);
 
 // Crear un nuevo recordatorio
 router.post("/addReminder",authMiddleware, postReminder);
+
+// Actualizar un nuevo recordario
+router.post('/reminders/:id',authMiddleware,updateReminders)
 
 // Eliminar un recordatorio por ID
 router.delete("/reminders/:id",authMiddleware, deleteReminder);
