@@ -16,9 +16,9 @@ router.get("/reminders/res", authMiddleware, getReminders);
 router.post("/addReminder",authMiddleware, postReminder);
 
 // Actualizar un nuevo recordario
-router.put('/reminders/:id',authMiddleware,updateReminders)
+router.put('/reminders/:id',updateReminders)
 
 // Eliminar un recordatorio por ID
-router.delete("/reminders/:id",authMiddleware, deleteReminder);
+router.delete("/reminders/:id", deleteReminder);
 
 export default router;
