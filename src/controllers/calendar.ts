@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { google, calendar_v3 } from "googleapis";
 import dotenv from "dotenv";
 import ClientModel from "../models/client";
-import TokenModel from "../models/tokenModel";
+import TokenModel from "../models/tokenModel"
 
 dotenv.config();
 
