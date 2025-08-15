@@ -14,7 +14,7 @@ export const getBirthdays = async (req: Request, res: Response) => {
     const patients = await ClientModel.aggregate([
       {
         $addFields: {
-          month: { $month: "$birthday" } // aquí usamos el nombre correcto
+          month: { $month: "$birthday" } 
         }
       },
       {
