@@ -1,24 +1,30 @@
 // src/controllers/birthday.ts
-import { Request, Response } from "express";
-import ClientModel from "../models/client";
+import type { Request, Response } from "express";
+import models from "../models";
 
-export const getBirthdays = async (req: Request, res: Response) => {
+export async function getBirthdays(req: Request, res: Response) {
   try {
-    const mes = Number(req.params.mes); // mes del 1 al 12
+    const mes = Number(req.params.mes);
 
     if (!mes || mes < 1 || mes > 12) {
-      return res.status(400).json({ message: "Mes inválido" });
+      res.status(400).send({
+        message: "Invalid month. Must be between 1 and 12."
+      });
+      return;
     }
 
-    // Filtrar por mes en MongoDB
-    const patients = await ClientModel.aggregate([
+    // Get clients with birthdays in the specified month
+    const clients = await models.clients.aggregate([
       {
         $addFields: {
-          month: { $month: "$birthday" } 
+          birthMonth: { $month: "$birthday" }
         }
       },
       {
-        $match: { month: mes }
+        $match: { 
+          birthMonth: mes,
+          birthday: { $exists: true, $ne: null }
+        }
       },
       {
         $project: {
@@ -27,18 +33,29 @@ export const getBirthdays = async (req: Request, res: Response) => {
           second_name: 1,
           birthday: 1
         }
+      },
+      {
+        $sort: { birthday: 1 }
       }
     ]);
 
-    const birthdays = patients.map(p => ({
-      id: p._id,
-      name: `${p.name} ${p.second_name || ""}`.trim(),
-      date: p.birthday
+    const birthdays = clients.map(client => ({
+      id: client._id,
+      name: `${client.name} ${client.second_name || ""}`.trim(),
+      birthday: client.birthday
     }));
 
-    res.json(birthdays);
+    res.status(200).send({
+      message: "Birthdays retrieved successfully.",
+      data: birthdays,
+      count: birthdays.length
+    });
+    return;
   } catch (error) {
-    console.error("Error al obtener cumpleaños:", error);
-    res.status(500).json({ message: "Error al obtener cumpleaños" });
+    console.error("Error getting birthdays:", error);
+    res.status(500).send({
+      message: "Internal server error while getting birthdays."
+    });
+    return;
   }
-};
+}
