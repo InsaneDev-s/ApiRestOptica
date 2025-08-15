@@ -1,3 +1,4 @@
+// src/controllers/birthday.ts
 import { Request, Response } from "express";
 import ClientModel from "../models/client";
 
@@ -9,11 +10,11 @@ export const getBirthdays = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Mes inválido" });
     }
 
-    // Filtrar directamente en MongoDB
+    // Filtrar por mes en MongoDB
     const patients = await ClientModel.aggregate([
       {
         $addFields: {
-          month: { $month: "$birthdate" }
+          month: { $month: "$birthday" } // aquí usamos el nombre correcto
         }
       },
       {
@@ -24,7 +25,7 @@ export const getBirthdays = async (req: Request, res: Response) => {
           _id: 1,
           name: 1,
           second_name: 1,
-          birthdate: 1
+          birthday: 1
         }
       }
     ]);
@@ -32,7 +33,7 @@ export const getBirthdays = async (req: Request, res: Response) => {
     const birthdays = patients.map(p => ({
       id: p._id,
       name: `${p.name} ${p.second_name || ""}`.trim(),
-      date: p.birthdate
+      date: p.birthday
     }));
 
     res.json(birthdays);
