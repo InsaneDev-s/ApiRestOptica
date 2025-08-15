@@ -4,36 +4,52 @@ import ClientModel from "../models/client";
 
 export const getBirthdays = async (req: Request, res: Response) => {
   try {
-    const mes = Number(req.params.mes); // mes del 1 al 12
-
+    const mes = Number(req.params.mes); // 1..12
     if (!mes || mes < 1 || mes > 12) {
       return res.status(400).json({ message: "Mes inválido" });
     }
 
-    // Filtrar por mes en MongoDB
     const patients = await ClientModel.aggregate([
+      // Normaliza a Date: si es string -> toDate; si ya es date -> úsala; si no, null
+      {
+        $set: {
+          bday: {
+            $switch: {
+              branches: [
+                { case: { $eq: [{ $type: "$birthday" }, "date"] }, then: "$birthday" },
+                { case: { $eq: [{ $type: "$birthday" }, "string"] }, then: { $toDate: "$birthday" } },
+              ],
+              default: null,
+            },
+          },
+        },
+      },
+      // Solo fechas válidas
+      { $match: { bday: { $type: "date" } } },
+
+      // Mes con timezone local
       {
         $addFields: {
-          month: { $month: "$birthday" } 
-        }
+          parts: { $dateToParts: { date: "$bday", timezone: "America/Guayaquil" } },
+        },
       },
-      {
-        $match: { month: mes }
-      },
+      { $match: { "parts.month": mes } },
+
+      // Proyección final
       {
         $project: {
           _id: 1,
           name: 1,
           second_name: 1,
-          birthday: 1
-        }
-      }
+          birthday: "$bday",
+        },
+      },
     ]);
 
-    const birthdays = patients.map(p => ({
+    const birthdays = patients.map((p: any) => ({
       id: p._id,
       name: `${p.name} ${p.second_name || ""}`.trim(),
-      date: p.birthday
+      date: p.birthday,
     }));
 
     res.json(birthdays);
